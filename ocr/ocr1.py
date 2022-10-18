@@ -128,15 +128,17 @@ class LiveDemo(OpencvCamera):
 
                 plate, black, self.plateChars, self.codeDay, violate, self.showBox, ret = Main.recognize(new_frame, self.savedChars, self.savedDay, self.showBox)
 
-                black = self.update_blackframe(ret, violate, black)
+                #black = self.update_blackframe(ret, violate, black)
                 # add the frame to the queue
                 # self.Q.put(frame)
             else:
                 plate = new_frame    
             
-            hstack1 = np.hstack((black,cv2.resize(plate,(640,480))))
+            #hstack1 = np.hstack((black,cv2.resize(plate,(640,480))))
 
-            self.deq.appendleft(hstack1)
+            #self.deq.appendleft(hstack1)
+
+            self.deq.appendleft(cv2.resize(plate,(640,480)))
 
                 # self.Q.put(hstack1)
 
