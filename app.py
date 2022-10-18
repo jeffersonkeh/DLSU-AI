@@ -3,6 +3,7 @@ import cv2
 
 app = Flask(__name__)
 
+# note check "ls /dev/video" to get the list of webcams
 camera = cv2.VideoCapture("/dev/video0")  # "/dev/video0 for laptop" "/dev/video4 for external"
 camera2 = cv2.VideoCapture("/dev/video4")  # "/dev/video0 for laptop" "/dev/video4 for external"
 success, frame = camera.read() 
@@ -46,6 +47,10 @@ def test_vid2():
     """Video streaming home page."""
     return render_template('test_vid2.html')
 
+@app.route('/logs')
+def logs():
+    return "LOGS"
+
 
 if __name__ == '__main__':
-    app.run(debug=False)
+    app.run(debug=True)
