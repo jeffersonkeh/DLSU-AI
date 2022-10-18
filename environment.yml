@@ -83,4 +83,7 @@ dependencies:
   - zipp=3.8.0=py39h06a4308_0
   - zlib=1.2.12=h5eee18b_3
   - zstd=1.5.2=ha4553b6_0
+  - pip:
+    - opencv-contrib-python==4.6.0.66
+    - opencv-python==4.6.0.66
 prefix: /home/jefferson/miniconda3/envs/flask
