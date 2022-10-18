@@ -6,8 +6,6 @@ app = Flask(__name__)
 # note check "ls /dev/video" to get the list of webcams
 camera = cv2.VideoCapture("/dev/video0")  # "/dev/video0 for laptop" "/dev/video4 for external"
 camera2 = cv2.VideoCapture("/dev/video2")  # "/dev/video0 for laptop" "/dev/video4 for external"
-success, frame = camera.read() 
-
 
 def gen_frames(camera=camera):  # generate frame by frame from camera
     count=0
@@ -40,15 +38,25 @@ def video_feed2():
 def index():
     return render_template('main.html')
 
-@app.route('/test_vid')
-def test_vid():
+@app.route('/vid1')
+def vid1():
     """Video streaming home page."""
-    return render_template('test_vid.html')
+    return render_template('camera1.html')
 
-@app.route('/test_vid2')
-def test_vid2():
+@app.route('/maps1')
+def maps1():
     """Video streaming home page."""
-    return render_template('test_vid2.html')
+    return render_template('maps1.html')
+
+@app.route('/vid2')
+def vid2():
+    """Video streaming home page."""
+    return render_template('camera2.html')
+
+@app.route('/maps2')
+def maps2():
+    """Video streaming home page."""
+    return render_template('maps2.html')
 
 @app.route('/logs')
 def logs():

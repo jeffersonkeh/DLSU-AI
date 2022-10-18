@@ -1,0 +1,87 @@
+<html>
+    <title>HoTWheels</title>
+    <head>
+    <style>
+        .header {
+            display: block;
+            position: absolute;
+            background-color: maroon;
+            border: none;
+            text-align: center;
+            height: 100px;
+            width: 100%;
+        }
+        .title {
+            font-size: 40px;
+            color: white;
+        }
+        .body {
+            top: 100px;
+            position: absolute;
+            min-height: 80%;
+            width: 100%;
+            background-color: white;
+            overflow-y: hidden;
+        }
+        .blocks {
+            position: absolute;
+            float: left;
+            padding: 10px;
+            height: 450px;
+            width: 800px;
+            left: 50%;
+            right: 50%;
+            top: 400px;
+            margin: -400px 0 0 -400px;
+            background-color: cyan;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .img {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 5px;
+        }
+        .button {
+            position: absolute;
+            float: left;
+            padding: 10px;
+            width: 150px;
+            height: 40px;
+            top: 120px;
+            left: 20px;
+            background-color: maroon;
+            border-radius: 10px;
+            z-index: 1;
+            text-align: center;
+            line-height: 40px;
+            font-size: 25px;
+            color: white;
+        }
+    </style>
+    </head>
+    <body style="margin:0; padding:0">
+        <a href="{{ url_for('index') }}">
+            <div class="header">
+                <h1 class="title">HoTWheels</h1>
+            </div>
+        </a>
+        <a href="{{ url_for('vid1') }}">
+            <div class="button" style="top:120px">
+                Video
+            </div>
+        </a>
+        <a href="{{ url_for('maps1') }}">
+            <div class="button" style="top:200px">
+                Location
+            </div>
+        </a>
+        <div class="body">
+            <div class="blocks">
+                <img class="img" src="{{ url_for('video_feed') }}">
+                <!-- <img class="img" src="{{ url_for('static',filename='kitten.jpg') }}"> -->
+            </div>
+        </div>
+    </body>
+    </html> 
