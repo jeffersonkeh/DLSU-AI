@@ -41,7 +41,7 @@ def recognize(image,saveChars,saveDay,showBox):
     if len(listOfPossiblePlates) == 0:
         ret = 0
         image1 = imgOriginalScene
-        print('No Plate')
+        #print('No Plate')
     else:
         licPlate = listOfPossiblePlates[0]                                                   
         plateChars = listOfPossiblePlates[0].strChars
