@@ -5,22 +5,25 @@ app = Flask(__name__)
 
 # note check "ls /dev/video" to get the list of webcams
 camera = cv2.VideoCapture("/dev/video0")  # "/dev/video0 for laptop" "/dev/video4 for external"
-camera2 = cv2.VideoCapture("/dev/video4")  # "/dev/video0 for laptop" "/dev/video4 for external"
+camera2 = cv2.VideoCapture("/dev/video2")  # "/dev/video0 for laptop" "/dev/video4 for external"
 success, frame = camera.read() 
 
 
 def gen_frames(camera=camera):  # generate frame by frame from camera
+    count=0
     while True:
         # Capture frame-by-frame
         success, frame = camera.read()  # read the camera frame
         if not success:
             break
         else:
-            ret, buffer = cv2.imencode('.jpg', frame)
-            frame = buffer.tobytes()
-            yield (b'--frame\r\n'
-                   b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
-
+            if count == 1:
+                count = 0;
+                ret, buffer = cv2.imencode('.jpg', frame)
+                frame = buffer.tobytes()
+                yield (b'--frame\r\n'
+                    b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+        count+=1
 
 @app.route('/video_feed')
 def video_feed():
@@ -53,4 +56,4 @@ def logs():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
