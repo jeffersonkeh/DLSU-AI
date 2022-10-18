@@ -56,7 +56,7 @@ class LiveDemo(OpencvCamera):
 
         #initialize Thread
         self.thread_process = Thread(target=self.update_frame, name=threadAI, args=())
-        self.thread_process.daemon = True
+        self.thread_process.daemon = True 
 
     def start(self):
         self = super(LiveDemo, self).start()

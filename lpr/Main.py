@@ -41,7 +41,7 @@ def recognize(image,saveChars,saveDay,showBox):
     if len(listOfPossiblePlates) == 0:
         ret = 0
         image1 = imgOriginalScene
-        print('No Plate')
+        #print('No Plate')
     else:
         licPlate = listOfPossiblePlates[0]                                                   
         plateChars = listOfPossiblePlates[0].strChars
@@ -92,12 +92,12 @@ def checkDay(plateChars,codeDay,saveChars,saveDay,showBox,ret):
         elif lastNum in [9,0]:
             codeDay = 'Friday'
             ret = 5
-        print('Good Plate')
+        #print('Good Plate')
     else:
         validChars = saveChars
         codeDay = saveDay
         ret = 6
-        print('Not 6-7 ' + str(len(plateChars)))
+        #print('Not 6-7 ' + str(len(plateChars)))
     displayMsg = ' ' + validChars + ' (Coding: ' + codeDay + ')'
     return displayMsg, codeDay, showBox, ret
  
@@ -112,17 +112,17 @@ def drawBox(image, black, licPlate, displayMsg, colorBox, ret):
     checkNeg = any(n<0 for n in dims)
     if checkNeg == True:
         ret = 0
-        print('maybe wrong')
+        #print('maybe wrong')
         return image, black, ret
     else:
         width  = xmax - xmin
         height = ymax - ymin
         area   = width * height
-        print(width,height,area)
+        #print(width,height,area)
 
         if height < 50 and area <= 10000:
             ret = 9
-            print('maybe wrong')
+            #print('maybe wrong')
             return image, black, ret
 
         else:
