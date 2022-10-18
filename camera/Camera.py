@@ -43,44 +43,6 @@ class BaseCamera(object):
         self.stopped = True
         self.thread.join()
 
-
-class OpencvCamera(BaseCamera):
-    def __init__(self, src, threadname="VideoStream"):
-        super(OpencvCamera, self).__init__(threadname)
-
-        # initialize the camera thread
-        self.stream = cv2.VideoCapture(src)
-
-        # read the first frame
-        (self.iscaptured, self.frame) = self.stream.read()
-
-    def start(self):
-        """Start the frame grab thread"""
-        return super(OpencvCamera, self).start()
-
-    def update(self):
-        """Continuously Grab Next frame from the camera"""
-        while True:
-
-            # Stop the thread when the stop method is triggered
-            if self.stopped:
-                return
-
-            # Get next frame
-            (self.iscaptured, self.frame) = self.stream.read()
-
-        time.sleep(0.1)
-        self.stream.release()
-
-    def read(self):
-        """Return the next frame from the queue to the user"""
-        return super(OpencvCamera, self).read()
-
-    def stop(self):
-        """Stop the frame grab thread"""
-        super(OpencvCamera, self).stop()
-
-
 DeviceMapper = {
     "webcam": 0,
     "logitech": "/dev/video4",
@@ -157,18 +119,31 @@ class LiveStream(BaseCamera):
 
 if __name__ == "__main__":
 
-
+    firstFps = True
     with LiveStream("webcam") as vid:
         time.sleep(1)
+        now = datetime.now(tz=timezone(timedelta(hours=8)))
 
+        i = 0
         while not vid.stopped:
             frame = vid.read()
 
             cv2.imshow("main", frame['image'])
+            
+            if i % 150 == 0:
+                if firstFps:
+                    firstFps = False
+                else:
+                    diff = frame['time_captured'] - now
+                    duration_s = diff.total_seconds()
+                    print("fps: {:.2f}".format(150/duration_s))
+                now = frame['time_captured']
 
             k = cv2.waitKey(1) & 0xFF
             if k==27:    # Esc key to stop
                 print("Exit requested.")
                 break
+
+            i += 1
         pass
     pass
