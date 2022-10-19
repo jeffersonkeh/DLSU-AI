@@ -8,7 +8,7 @@ app = Flask(__name__)
 
 # note check "ls /dev/video" to get the list of webcams
 camera = cv2.VideoCapture("/dev/video0")  # "/dev/video0 for laptop" "/dev/video4 for external"
-camera2 = cv2.VideoCapture("/dev/video2")  # "/dev/video0 for laptop" "/dev/video4 for external"
+# camera2 = cv2.VideoCapture("/dev/video2")  # "/dev/video0 for laptop" "/dev/video4 for external"
 # demo = ocr1.LiveDemo(src="/dev/video2").start()
 # time.sleep(1)
 
@@ -36,7 +36,7 @@ camera2 = cv2.VideoCapture("/dev/video2")  # "/dev/video0 for laptop" "/dev/vide
 
 count=0
 cropped_frame=np.zeros((720,1280,3), np.uint8)
-hello = "HELLOW ORLD"
+current_plate_num="ABCD1234"
 def gen_frames(camera=camera):  # generate frame by frame from camera
     global count
     global cropped_frame
@@ -89,26 +89,26 @@ def crop1():
 @app.route('/vid1')
 def vid1():
     """Video streaming home page."""
-    return render_template('camera1.html', hello=hello)
+    return render_template('camera1.html')
 
 @app.route('/maps1')
 def maps1():
     """Video streaming home page."""
     return render_template('maps1.html')
 
-@app.route('/vid2')
-def vid2():
-    """Video streaming home page."""
-    return render_template('camera2.html')
+# @app.route('/vid2')
+# def vid2():
+#     """Video streaming home page."""
+#     return render_template('camera2.html')
 
-@app.route('/maps2')
-def maps2():
-    """Video streaming home page."""
-    return render_template('maps2.html')
+# @app.route('/maps2')
+# def maps2():
+#     """Video streaming home page."""
+#     return render_template('maps2.html')
 
-@app.route('/logs')
-def logs():
-    return "LOGS"
+# @app.route('/logs')
+# def logs():
+#     return "LOGS"
 
 
 if __name__ == '__main__':
