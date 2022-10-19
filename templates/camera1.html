@@ -26,14 +26,14 @@
         .blocks {
             position: absolute;
             float: left;
-            padding: 10px;
+            padding: 5px;
             height: 450px;
             width: 800px;
             left: 50%;
             right: 50%;
             top: 20px;
             margin: 0 0 0 -400px;
-            background-color: green;
+            background-color: black;
             border-radius: 10px;
             text-align: center;
         }
@@ -47,11 +47,27 @@
             position: absolute;
             float: left;
             padding: 10px;
-            width: 150px;
+            width: 200px;
             height: 40px;
             top: 120px;
             left: 20px;
             background-color: maroon;
+            border-radius: 10px;
+            z-index: 1;
+            text-align: center;
+            line-height: 40px;
+            font-size: 25px;
+            color: white;
+        }
+        .cropped {
+            position: absolute;
+            float: right;
+            padding: 5px;
+            width: 300px;
+            height: 100px;
+            top: 120px;
+            right: 20px;
+            background-color: green;
             border-radius: 10px;
             z-index: 1;
             text-align: center;
@@ -77,14 +93,14 @@
                 Location
             </div>
         </a>
-        <a href="{{ url_for('crop1') }}">
-            <div class="button" style="top:360px">
-                Get Cropped
-            </div>
-        </a>
         <a href="{{ url_for('vid1') }}">
             <div class="button" style="top:280px">
-                <p id="text">{{ hello }}</p>
+                GetPlate
+            </div>
+        </a>
+        <a href="{{ url_for('alert') }}">
+            <div class="button" style="top:360px">
+                ALERT
             </div>
         </a>
         <div class="body">
@@ -92,6 +108,12 @@
                 <img class="img" src="{{ url_for('video_feed') }}">
                 <!-- <img class="img" src="{{ url_for('static',filename='kitten.jpg') }}"> -->
             </div>
+        </div>
+        <div class="cropped" style="top:120px">
+            <img class="img" src="{{ url_for('cropped_feed') }}">
+        </div>
+        <div class="cropped" style="top:240px">
+            <p id="text">{{ current_plate_num }}</p>
         </div>
     </body>
     </html> 
