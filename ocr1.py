@@ -53,6 +53,7 @@ class LiveDemo(OpencvCamera):
         self.savedChars = ''
         self.showBox    = ''
         self.violate    = ''
+        self.Bbox = ''
 
         #initialize Thread
         self.thread_process = Thread(target=self.update_frame, name=threadAI, args=())
@@ -126,8 +127,8 @@ class LiveDemo(OpencvCamera):
                 # producer/consumer queues since this one was generally
                 # idle grabbing frames.
 
-                plate, black, self.plateChars, self.codeDay, violate, self.showBox, ret = Main.recognize(new_frame, self.savedChars, self.savedDay, self.showBox)
-
+                plate, black, self.plateChars, self.codeDay, violate, self.showBox, ret, licPlate = Main.recognize(new_frame, self.savedChars, self.savedDay, self.showBox)
+                self.Bbox = licPlate
                 #black = self.update_blackframe(ret, violate, black)
                 # add the frame to the queue
                 # self.Q.put(frame)

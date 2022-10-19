@@ -9,30 +9,31 @@ app = Flask(__name__)
 # note check "ls /dev/video" to get the list of webcams
 camera = cv2.VideoCapture("/dev/video0")  # "/dev/video0 for laptop" "/dev/video4 for external"
 camera2 = cv2.VideoCapture("/dev/video2")  # "/dev/video0 for laptop" "/dev/video4 for external"
-# demo = ocr1.LiveDemo(src="/dev/video2").start()
-# time.sleep(1)
+demo = ocr1.LiveDemo(src=0).start()
+time.sleep(1)
 
 
-# def startDemo():
-#     while demo.running():
-#         frame = demo.read()
+def startDemo():
+    while demo.running():
+        frame = demo.read()
         
-#         if len(demo.plateChars) > 0:
-#             print(demo.plateChars) 
+        if len(demo.plateChars) > 0:
+            print(demo.plateChars)
+            print(demo.Bbox.rrLocationOfPlateInScene)
 
-#         ret, buffer = cv2.imencode('.jpg', frame)
-#         frame = buffer.tobytes()
-#         yield (b'--frame\r\n'
-#             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
+        ret, buffer = cv2.imencode('.jpg', frame)
+        frame = buffer.tobytes()
+        yield (b'--frame\r\n'
+            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
 
-#         '''
-#         k = cv2.waitKey(1) & 0xFF
-#         if k==27:    # Esc key to stop
-#             print("Exit requested.")
-#             break
-#         '''
+        '''
+        k = cv2.waitKey(1) & 0xFF
+        if k==27:    # Esc key to stop
+            print("Exit requested.")
+            break
+        '''
 
-#     demo.stop()
+    demo.stop()
 
 count=0
 cropped_frame=np.zeros((720,1280,3), np.uint8)
@@ -70,7 +71,8 @@ def cropped_feed():
 @app.route('/video_feed')
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(gen_frames(camera), mimetype='multipart/x-mixed-replace; boundary=frame')
+    #return Response(gen_frames(camera), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(startDemo(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_feed2')
 def video_feed2():

@@ -35,6 +35,7 @@ def recognize(image,saveChars,saveDay,showBox):
     numChars   = ''
     violate    = ''
     ret        = 9
+    licPlate = None
     listOfPossiblePlates.sort(key = lambda possiblePlate: len(possiblePlate.strChars), reverse = True)
     black = np.zeros((480,640,3),np.uint8)
     
@@ -67,7 +68,7 @@ def recognize(image,saveChars,saveDay,showBox):
                 displayMsg,
                 colorBox,
                 ret)
-    return image1, black, plateChars, codeDay, violate, showBox, ret
+    return image1, black, plateChars, codeDay, violate, showBox, ret, licPlate
 
 def checkDay(plateChars,codeDay,saveChars,saveDay,showBox,ret):
     validChars = ''
