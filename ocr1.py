@@ -35,10 +35,10 @@ class LiveDemo(OpencvCamera):
     queue_size=256
     cons = 5 #frame/s
 
-    def __init__(self, threadAI="ObjectDetection", threadstream="VideoStream"):
+    def __init__(self, src=0, threadAI="ObjectDetection", threadstream="VideoStream"):
         
         # Initialize Video Stream Grabbing
-        super(LiveDemo, self).__init__(src=0, threadname=threadstream)    
+        super(LiveDemo, self).__init__(src=src, threadname=threadstream)    
         
         # initialize the queue used to store frames read from
 		# the video file

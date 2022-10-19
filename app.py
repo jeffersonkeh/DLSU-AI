@@ -2,57 +2,75 @@ from flask import Flask, render_template, Response
 import ocr1
 import time
 import cv2
+import numpy as np
 
 app = Flask(__name__)
 
 # note check "ls /dev/video" to get the list of webcams
 camera = cv2.VideoCapture("/dev/video0")  # "/dev/video0 for laptop" "/dev/video4 for external"
 camera2 = cv2.VideoCapture("/dev/video2")  # "/dev/video0 for laptop" "/dev/video4 for external"
-demo = ocr1.LiveDemo().start()
-time.sleep(1)
+# demo = ocr1.LiveDemo(src="/dev/video2").start()
+# time.sleep(1)
 
 
-def startDemo():
-    while demo.running():
-        frame = demo.read()
+# def startDemo():
+#     while demo.running():
+#         frame = demo.read()
         
-        if len(demo.plateChars) > 0:
-            print(demo.plateChars) 
+#         if len(demo.plateChars) > 0:
+#             print(demo.plateChars) 
 
-        ret, buffer = cv2.imencode('.jpg', frame)
-        frame = buffer.tobytes()
-        yield (b'--frame\r\n'
-            b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
+#         ret, buffer = cv2.imencode('.jpg', frame)
+#         frame = buffer.tobytes()
+#         yield (b'--frame\r\n'
+#             b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n') 
 
-        '''
-        k = cv2.waitKey(1) & 0xFF
-        if k==27:    # Esc key to stop
-            print("Exit requested.")
-            break
-        '''
+#         '''
+#         k = cv2.waitKey(1) & 0xFF
+#         if k==27:    # Esc key to stop
+#             print("Exit requested.")
+#             break
+#         '''
 
-    demo.stop()
+#     demo.stop()
 
+count=0
+cropped_frame=np.zeros((720,1280,3), np.uint8)
+hello = "HELLOW ORLD"
 def gen_frames(camera=camera):  # generate frame by frame from camera
-    count=0
+    global count
+    global cropped_frame
     while True:
         # Capture frame-by-frame
         success, frame = camera.read()  # read the camera frame
         if not success:
             break
         else:
-            if count == 1:
-                count = 0;
+            if count % 1 == 0:
+                # count = 0;
+                cropped_frame = frame[1:100, 1:300, :]
                 ret, buffer = cv2.imencode('.jpg', frame)
                 frame = buffer.tobytes()
                 yield (b'--frame\r\n'
                     b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
         count+=1
 
+def get_cropped_frame():
+    global cropped_frame
+    ret, buffer = cv2.imencode('.jpg', cropped_frame)
+    frame = buffer.tobytes()
+    yield (b'--frame\r\n'
+        b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')  # concat frame one by one and show result
+
+@app.route('/cropped_feed')
+def cropped_feed():
+    #Video streaming route. Put this in the src attribute of an img tag
+    return Response(get_cropped_frame(), mimetype='multipart/x-mixed-replace; boundary=frame')
+
 @app.route('/video_feed')
 def video_feed():
     #Video streaming route. Put this in the src attribute of an img tag
-    return Response(startDemo(), mimetype='multipart/x-mixed-replace; boundary=frame')
+    return Response(gen_frames(camera), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 @app.route('/video_feed2')
 def video_feed2():
@@ -63,10 +81,15 @@ def video_feed2():
 def index():
     return render_template('main.html')
 
+@app.route('/crop1')
+def crop1():
+    """Video streaming home page."""
+    return render_template('camera1_cropped.html')
+
 @app.route('/vid1')
 def vid1():
     """Video streaming home page."""
-    return render_template('camera1.html')
+    return render_template('camera1.html', hello=hello)
 
 @app.route('/maps1')
 def maps1():
