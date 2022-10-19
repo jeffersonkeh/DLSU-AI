@@ -89,7 +89,7 @@ def crop1():
 @app.route('/vid1')
 def vid1():
     """Video streaming home page."""
-    return render_template('camera1.html')
+    return render_template('camera1.html',current_plate_num=current_plate_num)
 
 @app.route('/maps1')
 def maps1():
