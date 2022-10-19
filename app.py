@@ -7,7 +7,7 @@ import numpy as np
 app = Flask(__name__)
 app.secret_key = '12345'
 
-hot_car_list = ["ABCD1234"]
+hot_car_list = ["ZHA871"]
 
 # note check "ls /dev/video" to get the list of webcams
 camera = cv2.VideoCapture("/dev/video0")  # "/dev/video0 for laptop" "/dev/video4 for external"
@@ -18,22 +18,21 @@ time.sleep(1)
 count=0
 cropped_frame=np.zeros((720,1280,3), np.uint8)
 current_plate_num="ABCD1234"
+current_plate_coords=[0,0,0,0]
 
 def startDemo():
-#     global current_plate_num
+    global current_plate_num
+    global current_plate_coords
+    global cropped_frame
     while demo.running():
         frame = demo.read()
         
         if len(demo.plateChars) > 0:
             print(demo.plateChars)
             print(demo.Bbox.rrLocationOfPlateInScene)
-#             current_plate_num=demo.plateChars
-
-#             if current_plate_num in hot_car_list:
-#                 redirect(url_for('alert'))
-
-            if current_plate_num in hot_car_list:
-                redirect(url_for('alert'))
+            current_plate_num=demo.plateChars
+            # if current_plate_num in hot_car_list:
+            #     return redirect(url_for('alert'))
 
         ret, buffer = cv2.imencode('.jpg', frame)
         frame = buffer.tobytes()
